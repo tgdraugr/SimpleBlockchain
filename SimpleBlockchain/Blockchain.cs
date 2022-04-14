@@ -2,7 +2,7 @@
 
 public class Blockchain
 {
-    private readonly List<string> _transactions = new();
+    private readonly List<Transaction> _transactions = new();
     private readonly List<Block> _chain = new();
     
     public Blockchain()
@@ -15,7 +15,8 @@ public class Blockchain
 
     public int NewTransaction(string sender, string recipient, int amount)
     {
-        _transactions.Add($"{sender}:{recipient}:{amount}");
+        var newTransaction = new Transaction(sender, recipient, amount);
+        _transactions.Add(newTransaction);
         return LastBlock.Index + 1;
     }
 
