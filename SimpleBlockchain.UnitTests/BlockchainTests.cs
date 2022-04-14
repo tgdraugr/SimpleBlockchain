@@ -19,11 +19,11 @@ public class BlockchainTests
     {
         const int expectedNextMinedBlockIndex = 2;
 
-        for (var transaction = 0; transaction < 3; transaction++)
+        for (var transactionCount = 1; transactionCount <= 3; transactionCount++)
         {
-            var nextMinedBlockIndex = _blockchain.NewTransaction("sender", "recipient", 10);
-            Assert.Equal(expectedNextMinedBlockIndex, nextMinedBlockIndex);
-            Assert.Equal(transaction + 1, _blockchain.CurrentTransactionsCount);
+            var transaction = _blockchain.NewTransaction("sender", "recipient", 10);
+            Assert.Equal(expectedNextMinedBlockIndex, transaction.BlockIndex);
+            Assert.Equal(transactionCount, _blockchain.CurrentTransactionsCount);
         }
     }
 }

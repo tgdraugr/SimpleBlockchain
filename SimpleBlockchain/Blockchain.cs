@@ -11,13 +11,14 @@ public class Blockchain
     }
 
     public Block LastMinedBlock => _chain[^1];
+    
     public int CurrentTransactionsCount => _transactions.Count;
 
-    public int NewTransaction(string sender, string recipient, int amount)
+    public Transaction NewTransaction(string sender, string recipient, int amount)
     {
-        var newTransaction = new Transaction(sender, recipient, amount);
+        var newTransaction = new Transaction(sender, recipient, amount, LastMinedBlock.Index + 1);
         _transactions.Add(newTransaction);
-        return LastMinedBlock.Index + 1;
+        return newTransaction;
     }
 
     private Block NewBlock(int proof, string previousHash)
