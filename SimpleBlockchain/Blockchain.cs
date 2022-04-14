@@ -26,10 +26,8 @@ public class Blockchain
 
     private Block NewBlock(int proof, string previousHash)
     {
-        var currentIndex = _chain.Count + 1;
-        var newBlock = new Block(currentIndex, DateTime.Now, new List<string>(), proof, previousHash);
+        var newBlock = new Block(_chain.Count + 1, DateTime.Now, new List<string>(), proof, previousHash);
         _chain.Add(newBlock);
-
         return newBlock;
     }
 }

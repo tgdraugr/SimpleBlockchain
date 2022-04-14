@@ -4,21 +4,26 @@ namespace SimpleBlockchain.UnitTests;
 
 public class BlockchainTests
 {
+    private readonly Blockchain _blockchain = new();
+
     [Fact]
     public void Should_have_a_genesis_block()
     {
         const int genesisBlockIndex = 1;
-        var blockchain = new Blockchain();
-        Assert.NotNull(blockchain.LastBlock);
-        Assert.Equal(genesisBlockIndex, blockchain.LastBlock.Index);
+        Assert.NotNull(_blockchain.LastBlock);
+        Assert.Equal(genesisBlockIndex, _blockchain.LastBlock.Index);
     }
 
     [Fact]
     public void Should_add_new_transaction_into_next_mined_block()
     {
-        var blockchain = new Blockchain();
-        var blockIndex = blockchain.NewTransaction("sender", "recipient", 10);
-        Assert.Equal(2, blockIndex);
-        Assert.Equal(1, blockchain.CurrentTransactionsCount);
+        const int expectedNextMinedBlockIndex = 2;
+
+        for (var transaction = 0; transaction < 3; transaction++)
+        {
+            var nextMinedBlockIndex = _blockchain.NewTransaction("sender", "recipient", 10);
+            Assert.Equal(expectedNextMinedBlockIndex, nextMinedBlockIndex);
+            Assert.Equal(transaction + 1, _blockchain.CurrentTransactionsCount);
+        }
     }
 }
