@@ -7,7 +7,7 @@ public class Blockchain
     
     public Blockchain()
     {
-        GenerateGenesisBlock();
+        SeedWithGenesisBlock();
     }
 
     public Block LastBlock => _chain[^1];
@@ -20,15 +20,15 @@ public class Blockchain
         return LastBlock.Index + 1;
     }
 
-    private void GenerateGenesisBlock()
-    {
-        NewBlock(1, "previousHash");
-    }
-
     private Block NewBlock(int proof, string previousHash)
     {
         var newBlock = new Block(_chain.Count + 1, DateTime.Now, new List<string>(), proof, previousHash);
         _chain.Add(newBlock);
         return newBlock;
+    }
+
+    private void SeedWithGenesisBlock()
+    {
+        NewBlock(1, "None");
     }
 }
