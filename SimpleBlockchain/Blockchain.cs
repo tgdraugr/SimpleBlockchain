@@ -9,15 +9,19 @@ public class Blockchain
         GenerateGenesisBlock();
     }
 
-    public Block LastBlock => _chain.Last();
+    public Block LastBlock => _chain[^1];
 
     private void GenerateGenesisBlock()
     {
-        RegisterNewBlock(1, "previous");
+        NewBlock(1, "previousHash");
     }
 
-    private void RegisterNewBlock(int proof, string previousHash)
+    private Block NewBlock(int proof, string previousHash)
     {
-        _chain.Add(new Block(1, DateTime.Now, new List<string>(), proof, previousHash));
+        var currentIndex = _chain.Count + 1;
+        var newBlock = new Block(currentIndex, DateTime.Now, new List<string>(), proof, previousHash);
+        _chain.Add(newBlock);
+
+        return newBlock;
     }
 }
