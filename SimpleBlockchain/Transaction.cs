@@ -1,3 +1,3 @@
 ﻿namespace SimpleBlockchain;
 
-internal record Transaction(string Sender, string Recipient, int Amount);
+public record Transaction(string Sender, string Recipient, int Amount);

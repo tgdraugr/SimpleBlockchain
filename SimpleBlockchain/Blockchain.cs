@@ -22,7 +22,7 @@ public class Blockchain
 
     private Block NewBlock(int proof, string previousHash)
     {
-        var newBlock = new Block(_chain.Count + 1, DateTime.Now, new List<string>(), proof, previousHash);
+        var newBlock = new Block(_chain.Count + 1, DateTime.Now, new List<Transaction>(), proof, previousHash);
         _chain.Add(newBlock);
         return newBlock;
     }
