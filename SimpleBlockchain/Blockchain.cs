@@ -2,6 +2,7 @@
 
 public class Blockchain
 {
+    private readonly List<string> _transactions = new();
     private readonly List<Block> _chain = new();
     
     public Blockchain()
@@ -10,6 +11,13 @@ public class Blockchain
     }
 
     public Block LastBlock => _chain[^1];
+    public int CurrentTransactionsCount => _transactions.Count;
+
+    public int NewTransaction(string sender, string recipient, int amount)
+    {
+        _transactions.Add($"{sender}:{recipient}:{amount}");
+        return LastBlock.Index + 1;
+    }
 
     private void GenerateGenesisBlock()
     {
