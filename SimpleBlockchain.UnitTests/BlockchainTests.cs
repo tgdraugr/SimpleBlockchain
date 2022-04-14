@@ -10,8 +10,8 @@ public class BlockchainTests
     public void Should_have_a_genesis_block()
     {
         const int genesisBlockIndex = 1;
-        Assert.NotNull(_blockchain.LastBlock);
-        Assert.Equal(genesisBlockIndex, _blockchain.LastBlock.Index);
+        Assert.NotNull(_blockchain.LastMinedBlock);
+        Assert.Equal(genesisBlockIndex, _blockchain.LastMinedBlock.Index);
     }
 
     [Fact]

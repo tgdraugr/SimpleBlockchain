@@ -10,14 +10,14 @@ public class Blockchain
         SeedWithGenesisBlock();
     }
 
-    public Block LastBlock => _chain[^1];
+    public Block LastMinedBlock => _chain[^1];
     public int CurrentTransactionsCount => _transactions.Count;
 
     public int NewTransaction(string sender, string recipient, int amount)
     {
         var newTransaction = new Transaction(sender, recipient, amount);
         _transactions.Add(newTransaction);
-        return LastBlock.Index + 1;
+        return LastMinedBlock.Index + 1;
     }
 
     private Block NewBlock(int proof, string previousHash)
