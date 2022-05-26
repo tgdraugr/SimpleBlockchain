@@ -6,15 +6,15 @@ public class Blockchain
 {
     private readonly List<Transaction> _transactions = new();
     private readonly List<Block> _chain = new();
-    private readonly IProduceHash _hashProvider;
+    private readonly IProduceHash _hashProducer;
     
     public Blockchain() 
         : this(new Sha256HashProducer())
     { }
 
-    public Blockchain(IProduceHash hashProvider)
+    public Blockchain(IProduceHash hashProducer)
     {
-        _hashProvider = hashProvider;
+        _hashProducer = hashProducer;
         SeedWithGenesisBlock();
     }
 
@@ -41,7 +41,7 @@ public class Blockchain
             DateTime.Now, 
             _transactions.ToList(), 
             proof,
-            previousHash ?? _hashProvider.GeneratedHash(LastMinedBlock));
+            previousHash ?? _hashProducer.GeneratedHash(LastMinedBlock));
         
         _chain.Add(newBlock);
         _transactions.Clear();

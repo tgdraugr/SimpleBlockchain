@@ -4,7 +4,7 @@ namespace SimpleBlockchain.UnitTests;
 
 public class BlockchainTests
 {
-    private readonly Blockchain _blockchain = new();
+    private readonly Blockchain _blockchain = new(new FakeHashProducer());
 
     [Fact]
     public void Should_have_a_genesis_block()
@@ -37,5 +37,6 @@ public class BlockchainTests
         _blockchain.MineBlock();
         Assert.Equal(expectedNumberOfTransactions, _blockchain.LastMinedBlock.Transactions.Count);
         Assert.Equal(0, _blockchain.CurrentTransactionsCount);
+        Assert.Equal("0x1", _blockchain.LastMinedBlock.PreviousHash);
     }
 }
