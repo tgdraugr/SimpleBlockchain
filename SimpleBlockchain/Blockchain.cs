@@ -1,4 +1,8 @@
-﻿namespace SimpleBlockchain;
+﻿using System.Security.Cryptography;
+using System.Text;
+using Newtonsoft.Json;
+
+namespace SimpleBlockchain;
 
 public class Blockchain
 {
@@ -23,12 +27,18 @@ public class Blockchain
 
     public Block MineBlock()
     {
-        return NewBlock(10, "StaticHash");
+        return NewBlock(10);
     }
 
-    private Block NewBlock(int proof, string previousHash)
+    private Block NewBlock(int proof, string? previousHash = default)
     {
-        var newBlock = new Block(_chain.Count + 1, DateTime.Now, new List<Transaction>(_transactions), proof, previousHash);
+        var newBlock = new Block(
+            _chain.Count + 1, 
+            DateTime.Now, 
+            _transactions.ToList(), 
+            proof,
+            previousHash ?? GenerateSha256Hash(LastMinedBlock));
+        
         _chain.Add(newBlock);
         _transactions.Clear();
         return newBlock;
@@ -37,5 +47,25 @@ public class Blockchain
     private void SeedWithGenesisBlock()
     {
         NewBlock(1, "None");
+    }
+    
+    private static string GenerateSha256Hash(Block block)
+    {
+        var rawData = JsonConvert.SerializeObject(block);
+        return GenerateSha256Hash(rawData);
+    }
+
+    private static string GenerateSha256Hash(string rawData)
+    {
+        using var sha256 = SHA256.Create();
+        var hashInBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+
+        var builder = new StringBuilder();
+        foreach (var hashByte in hashInBytes)
+        {
+            builder.Append(hashByte.ToString("x2"));
+        }
+
+        return builder.ToString();
     }
 }
