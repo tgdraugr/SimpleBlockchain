@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace SimpleBlockchain;
+﻿namespace SimpleBlockchain;
 
 public class Blockchain
 {
