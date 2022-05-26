@@ -26,4 +26,16 @@ public class BlockchainTests
             Assert.Equal(transactionCount, _blockchain.CurrentTransactionsCount);
         }
     }
+
+    [Fact]
+    public void Should_reset_current_transactions_on_mining_a_new_block()
+    {
+        const int expectedNumberOfTransactions = 3;
+        for (var transactionCount = 1; transactionCount <= expectedNumberOfTransactions; transactionCount++)
+            _blockchain.NewTransaction("sender", "recipient", 10);
+
+        _blockchain.MineBlock();
+        Assert.Equal(expectedNumberOfTransactions, _blockchain.LastMinedBlock.Transactions.Count);
+        Assert.Equal(0, _blockchain.CurrentTransactionsCount);
+    }
 }

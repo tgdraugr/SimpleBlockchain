@@ -21,10 +21,16 @@ public class Blockchain
         return newTransaction;
     }
 
+    public Block MineBlock()
+    {
+        return NewBlock(10, "StaticHash");
+    }
+
     private Block NewBlock(int proof, string previousHash)
     {
-        var newBlock = new Block(_chain.Count + 1, DateTime.Now, new List<Transaction>(), proof, previousHash);
+        var newBlock = new Block(_chain.Count + 1, DateTime.Now, new List<Transaction>(_transactions), proof, previousHash);
         _chain.Add(newBlock);
+        _transactions.Clear();
         return newBlock;
     }
 
