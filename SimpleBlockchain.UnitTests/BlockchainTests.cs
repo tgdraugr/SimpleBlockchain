@@ -34,9 +34,20 @@ public class BlockchainTests
         for (var transactionCount = 1; transactionCount <= expectedNumberOfTransactions; transactionCount++)
             _blockchain.NewTransaction("sender", "recipient", 10);
 
-        _blockchain.MineBlock();
+        _blockchain.NewMinedBlock();
         Assert.Equal(expectedNumberOfTransactions, _blockchain.LastMinedBlock.Transactions.Count);
         Assert.Equal(0, _blockchain.CurrentTransactionsCount);
         Assert.Equal("0x1", _blockchain.LastMinedBlock.PreviousHash);
+    }
+
+    [Fact]
+    public void Should_produce_a_proof_of_work_when_mining_a_new_block()
+    {
+        const int expectedNumberOfTransactions = 3;
+        for (var transactionCount = 1; transactionCount <= expectedNumberOfTransactions; transactionCount++)
+            _blockchain.NewTransaction("sender", "recipient", 10);
+
+        _blockchain.NewMinedBlock();
+        Assert.Equal(true, _blockchain.CalledProofOfWork);
     }
 }

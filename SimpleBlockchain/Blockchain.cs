@@ -19,6 +19,7 @@ public class Blockchain
     public Block LastMinedBlock => _chain[^1];
     
     public int CurrentTransactionsCount => _transactions.Count;
+    public bool CalledProofOfWork { get; private set; }
 
     public Transaction NewTransaction(string sender, string recipient, int amount)
     {
@@ -27,9 +28,16 @@ public class Blockchain
         return newTransaction;
     }
 
-    public Block MineBlock()
+    public Block NewMinedBlock()
     {
-        return NewBlock(10);
+        var nonce = ProduceProofOfWork();
+        return NewBlock(nonce);
+    }
+
+    private int ProduceProofOfWork()
+    {
+        CalledProofOfWork = true;
+        return 10;
     }
 
     private Block NewBlock(int nonce, string? previousHash = default)
