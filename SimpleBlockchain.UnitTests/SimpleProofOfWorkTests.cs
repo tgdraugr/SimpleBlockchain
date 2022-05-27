@@ -26,7 +26,7 @@ public class SimpleProofOfWorkTests
     };
 
     [Fact]
-    public void Should_brew_a_nonce_when_hash_has_predefined_count_of_leading_zeros()
+    public void Should_brew_a_nonce_when_hash_has_default_count_of_leading_zeros()
     {
         var fakeHashProducer = new FakeHashProducer(ExpectedHashesPerNonce);
         var pow = new SimpleProofOfWork(fakeHashProducer);

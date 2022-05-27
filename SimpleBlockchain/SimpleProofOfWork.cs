@@ -2,9 +2,10 @@
 
 public class SimpleProofOfWork : IBrewNonce
 {
+    private const int DefaultLeadingZeros = 2;
     private readonly IProduceHash _hashProducer;
 
-    public SimpleProofOfWork(IProduceHash hashProducer)
+    public SimpleProofOfWork(IProduceHash hashProducer, int defaultLeadingZeros = DefaultLeadingZeros)
     {
         _hashProducer = hashProducer;
     }
@@ -22,6 +23,6 @@ public class SimpleProofOfWork : IBrewNonce
     {
         var guess = $"{lastMinedBlock.Nonce}:{lastMinedBlock.PreviousHash}:{nonce}";
         var hash = _hashProducer.GeneratedHash(guess);
-        return hash.StartsWith("00");
+        return hash.StartsWith(new string('0', DefaultLeadingZeros));
     }
 }
