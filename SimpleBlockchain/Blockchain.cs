@@ -32,13 +32,13 @@ public class Blockchain
         return NewBlock(10);
     }
 
-    private Block NewBlock(int proof, string? previousHash = default)
+    private Block NewBlock(int nonce, string? previousHash = default)
     {
         var newBlock = new Block(
             _chain.Count + 1, 
             DateTime.Now, 
             _transactions.ToList(), 
-            proof,
+            nonce,
             previousHash ?? _hashProducer.GeneratedHash(LastMinedBlock));
         
         _chain.Add(newBlock);
