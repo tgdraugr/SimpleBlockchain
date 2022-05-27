@@ -26,7 +26,6 @@ internal class FakeHashProducer : IProduceHash
     private void TrackInvokes(string input)
     {
         var splitInput = input.Split(":");
-        if (splitInput.Length == 0) return;
         PreviousNonceInvoked.Add(splitInput[0]);
         PreviousHashInvoked.Add(splitInput[1]);
         NonceInvoked.Add(int.Parse(splitInput[2]));

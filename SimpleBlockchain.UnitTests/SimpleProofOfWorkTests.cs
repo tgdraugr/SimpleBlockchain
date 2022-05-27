@@ -26,20 +26,14 @@ public class SimpleProofOfWorkTests
         { 7, "0000" }
     };
 
+    private readonly FakeHashProducer _fakeHashProducer = new(ExpectedHashesPerNonce);
+
     [Fact]
     public void Should_brew_a_nonce_when_hash_has_default_count_of_leading_zeros()
     {
-        var fakeHashProducer = new FakeHashProducer(ExpectedHashesPerNonce);
-        var pow = new SimpleProofOfWork(fakeHashProducer);
-        
+        var pow = new SimpleProofOfWork(_fakeHashProducer);
         var nonce = pow.NewNonce(DummyBlock);
-
-        Assert.Equal(1, fakeHashProducer.PreviousNonceInvoked.Count);
-        Assert.Equal(1, fakeHashProducer.PreviousHashInvoked.Count);
-        Assert.Contains(DummyBlock.Nonce.ToString(), fakeHashProducer.PreviousNonceInvoked);
-        Assert.Contains(DummyBlock.PreviousHash, fakeHashProducer.PreviousHashInvoked);
-        Assert.Equal(new HashSet<int> { 0, 1, 2, 3, 4 }, fakeHashProducer.NonceInvoked);
-        Assert.Equal(4, nonce);
+        VerifyNonceBrewing(4, nonce);
     }
 
     [Theory]
@@ -48,16 +42,18 @@ public class SimpleProofOfWorkTests
     [InlineData(4, 7)]
     public void Should_brew_nonce_when_hash_has_a_given_count_of_leading_zeros(int leadingZeros, int expectedNonce)
     {
-        var fakeHashProducer = new FakeHashProducer(ExpectedHashesPerNonce);
-        var pow = new SimpleProofOfWork(fakeHashProducer, leadingZeros);
-        
+        var pow = new SimpleProofOfWork(_fakeHashProducer, leadingZeros);
         var nonce = pow.NewNonce(DummyBlock);
+        VerifyNonceBrewing(expectedNonce, nonce);
+    }
 
-        Assert.Equal(1, fakeHashProducer.PreviousNonceInvoked.Count);
-        Assert.Equal(1, fakeHashProducer.PreviousHashInvoked.Count);
-        Assert.Contains(DummyBlock.Nonce.ToString(), fakeHashProducer.PreviousNonceInvoked);
-        Assert.Contains(DummyBlock.PreviousHash, fakeHashProducer.PreviousHashInvoked);
-        Assert.Equal(Enumerable.Range(0, expectedNonce + 1), fakeHashProducer.NonceInvoked);
+    private void VerifyNonceBrewing(int expectedNonce, int nonce)
+    {
+        Assert.Equal(1, _fakeHashProducer.PreviousNonceInvoked.Count);
+        Assert.Equal(1, _fakeHashProducer.PreviousHashInvoked.Count);
+        Assert.Contains(DummyBlock.Nonce.ToString(), _fakeHashProducer.PreviousNonceInvoked);
+        Assert.Contains(DummyBlock.PreviousHash, _fakeHashProducer.PreviousHashInvoked);
+        Assert.Equal(Enumerable.Range(0, expectedNonce + 1), _fakeHashProducer.NonceInvoked);
         Assert.Equal(expectedNonce, nonce);
     }
 }
