@@ -2,11 +2,13 @@
 
 public class FakeNonceBrewer : IBrewNonce
 {
-    public bool CalledProofOfWork { get; private set; }
+    public bool Called { get; private set; }
+    public Block? LastMinedBlockReceived { get; private set; }
 
-    public int NewNonce()
+    public int NewNonce(Block lastMinedBlock)
     {
-        CalledProofOfWork = true;
+        Called = true;
+        LastMinedBlockReceived = lastMinedBlock;
         return 10;
     }
 }

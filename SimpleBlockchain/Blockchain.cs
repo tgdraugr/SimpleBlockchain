@@ -28,7 +28,7 @@ public class Blockchain
 
     public Block NewMinedBlock()
     {
-        var nonce = _nonceBrewer.NewNonce();
+        var nonce = _nonceBrewer.NewNonce(LastMinedBlock);
         return NewBlock(nonce);
     }
 

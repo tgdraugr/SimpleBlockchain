@@ -2,5 +2,5 @@
 
 public interface IBrewNonce
 {
-    int NewNonce();
+    int NewNonce(Block lastMinedBlock);
 }

@@ -41,12 +41,16 @@ public class BlockchainTests
     }
 
     [Fact]
-    public void Should_produce_a_proof_of_work_when_mining_a_new_block()
+    public void Should_produce_a_new_nonce_based_on_last_block_when_mining_a_new_one()
     {
         const int expectedNumberOfTransactions = 3;
         BroadcastTransactions(expectedNumberOfTransactions);
+        
+        var lastMinedBlock = _blockchain.LastMinedBlock; // persist current lastMinedBlock for expectation
         _blockchain.NewMinedBlock();
-        Assert.True(FakeNonceBrewer.CalledProofOfWork);
+        
+        Assert.True(FakeNonceBrewer.Called);
+        Assert.Equal(lastMinedBlock, FakeNonceBrewer.LastMinedBlockReceived);
     }
 
     private void BroadcastTransactions(int totalTransactions)
