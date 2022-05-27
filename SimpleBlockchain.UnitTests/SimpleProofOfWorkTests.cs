@@ -12,83 +12,32 @@ public class SimpleProofOfWorkTests
         new List<Transaction>(), 
         1, 
         "PreviousHash");
-    
+
+    private static readonly Dictionary<int, string> ExpectedHashesPerNonce = new()
+    {
+        { 0, "abc" },
+        { 1, "x91" },
+        { 2, "ax1" },
+        { 3, "0x1" },
+        { 4, "00a" },
+        { 5, "0a2" },
+        { 6, "000" },
+        { 7, "ax1" }
+    };
+
     [Fact]
     public void Should_brew_a_nonce_when_hash_has_predefined_count_of_leading_zeros()
     {
-        var expectedHashesPerNonce = new Dictionary<int, string>
-        {
-            { 0, "abc" },
-            { 1, "x91" },
-            { 2, "ax1" },
-            { 3, "0x1" },
-            { 4, "00a" },
-            { 5, "0a2" }
-        };
-
-        var hashProducer = new AnotherHashProducer(expectedHashesPerNonce);
+        var hashProducer = new FakeHashProducerWithTracking(ExpectedHashesPerNonce);
         var pow = new SimpleProofOfWork(hashProducer);
         
         var nonce = pow.NewNonce(DummyBlock);
 
         Assert.Equal(1, hashProducer.PreviousNonceInvoked.Count);
         Assert.Equal(1, hashProducer.PreviousHashInvoked.Count);
-        Assert.Contains("1", hashProducer.PreviousNonceInvoked);
-        Assert.Contains("PreviousHash", hashProducer.PreviousHashInvoked);
+        Assert.Contains(DummyBlock.Nonce.ToString(), hashProducer.PreviousNonceInvoked);
+        Assert.Contains(DummyBlock.PreviousHash, hashProducer.PreviousHashInvoked);
+        Assert.Equal(new HashSet<int> { 0, 1, 2, 3, 4 }, hashProducer.NonceInvoked);
         Assert.Equal(4, nonce);
-    }
-}
-
-public class AnotherHashProducer : IProduceHash
-{
-    private int _index;
-    private readonly Dictionary<int, string> _hashesPerNonce;
-
-    public AnotherHashProducer(Dictionary<int,string> hashesPerNonce)
-    {
-        _hashesPerNonce = hashesPerNonce;
-    }
-
-    public ISet<string> PreviousNonceInvoked { get; } = new HashSet<string>();
-    public ISet<string> PreviousHashInvoked { get; } = new HashSet<string>();
-
-    public string GeneratedHash(string input)
-    {
-        TrackInvokes(input);
-        return _hashesPerNonce[_index++];
-    }
-
-    private void TrackInvokes(string input)
-    {
-        var split = input.Split(":");
-        if (split.Length == 0) return;
-        PreviousNonceInvoked.Add(split[0]);
-        PreviousHashInvoked.Add(split[1]);
-    }
-}
-
-public class SimpleProofOfWork : IBrewNonce
-{
-    private readonly AnotherHashProducer _hashProducer;
-
-    public SimpleProofOfWork(AnotherHashProducer hashProducer)
-    {
-        _hashProducer = hashProducer;
-    }
-
-    public int NewNonce(Block lastMinedBlock)
-    {
-        var nonce = 0;
-        while (IsValidProof(lastMinedBlock, nonce) is false)
-            nonce++;
-        
-        return nonce;
-    }
-
-    private bool IsValidProof(Block lastMinedBlock, int nonce)
-    {
-        var guess = $"{lastMinedBlock.Nonce}:{lastMinedBlock.PreviousHash}:{nonce}";
-        var hash = _hashProducer.GeneratedHash(guess);
-        return hash.StartsWith("00");
     }
 }
