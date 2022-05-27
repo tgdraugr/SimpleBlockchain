@@ -30,7 +30,11 @@ public class SimpleProofOfWorkTests
         var pow = new SimpleProofOfWork(hashProducer);
         
         var nonce = pow.NewNonce(DummyBlock);
-        
+
+        Assert.Equal(1, hashProducer.PreviousNonceInvoked.Count);
+        Assert.Equal(1, hashProducer.PreviousHashInvoked.Count);
+        Assert.Contains("1", hashProducer.PreviousNonceInvoked);
+        Assert.Contains("PreviousHash", hashProducer.PreviousHashInvoked);
         Assert.Equal(4, nonce);
     }
 }
@@ -45,9 +49,21 @@ public class AnotherHashProducer : IProduceHash
         _hashesPerNonce = hashesPerNonce;
     }
 
+    public ISet<string> PreviousNonceInvoked { get; } = new HashSet<string>();
+    public ISet<string> PreviousHashInvoked { get; } = new HashSet<string>();
+
     public string GeneratedHash(string input)
     {
+        TrackInvokes(input);
         return _hashesPerNonce[_index++];
+    }
+
+    private void TrackInvokes(string input)
+    {
+        var split = input.Split(":");
+        if (split.Length == 0) return;
+        PreviousNonceInvoked.Add(split[0]);
+        PreviousHashInvoked.Add(split[1]);
     }
 }
 
@@ -71,7 +87,8 @@ public class SimpleProofOfWork : IBrewNonce
 
     private bool IsValidProof(Block lastMinedBlock, int nonce)
     {
-        var hash = _hashProducer.GeneratedHash("");
+        var guess = $"{lastMinedBlock.Nonce}:{lastMinedBlock.PreviousHash}:{nonce}";
+        var hash = _hashProducer.GeneratedHash(guess);
         return hash.StartsWith("00");
     }
 }
