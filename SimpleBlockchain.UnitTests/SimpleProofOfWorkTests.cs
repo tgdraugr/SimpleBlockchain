@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace SimpleBlockchain.UnitTests;
@@ -15,14 +16,14 @@ public class SimpleProofOfWorkTests
 
     private static readonly Dictionary<int, string>? ExpectedHashesPerNonce = new()
     {
-        { 0, "abc" },
-        { 1, "x91" },
-        { 2, "ax1" },
-        { 3, "0x1" },
-        { 4, "00a" },
-        { 5, "0a2" },
-        { 6, "000" },
-        { 7, "ax1" }
+        { 0, "abca" },
+        { 1, "x91b" },
+        { 2, "ax1c" },
+        { 3, "0x1d" },
+        { 4, "00ae" },
+        { 5, "0a2f" },
+        { 6, "000g" },
+        { 7, "0000" }
     };
 
     [Fact]
@@ -39,5 +40,24 @@ public class SimpleProofOfWorkTests
         Assert.Contains(DummyBlock.PreviousHash, fakeHashProducer.PreviousHashInvoked);
         Assert.Equal(new HashSet<int> { 0, 1, 2, 3, 4 }, fakeHashProducer.NonceInvoked);
         Assert.Equal(4, nonce);
+    }
+
+    [Theory]
+    [InlineData(1, 3)]
+    [InlineData(3, 6)]
+    [InlineData(4, 7)]
+    public void Should_brew_nonce_when_hash_has_a_given_count_of_leading_zeros(int leadingZeros, int expectedNonce)
+    {
+        var fakeHashProducer = new FakeHashProducer(ExpectedHashesPerNonce);
+        var pow = new SimpleProofOfWork(fakeHashProducer, leadingZeros);
+        
+        var nonce = pow.NewNonce(DummyBlock);
+
+        Assert.Equal(1, fakeHashProducer.PreviousNonceInvoked.Count);
+        Assert.Equal(1, fakeHashProducer.PreviousHashInvoked.Count);
+        Assert.Contains(DummyBlock.Nonce.ToString(), fakeHashProducer.PreviousNonceInvoked);
+        Assert.Contains(DummyBlock.PreviousHash, fakeHashProducer.PreviousHashInvoked);
+        Assert.Equal(Enumerable.Range(0, expectedNonce + 1), fakeHashProducer.NonceInvoked);
+        Assert.Equal(expectedNonce, nonce);
     }
 }
