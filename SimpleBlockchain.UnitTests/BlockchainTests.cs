@@ -34,10 +34,12 @@ public class BlockchainTests
         const int expectedNumberOfTransactions = 3;
         BroadcastTransactions(expectedNumberOfTransactions);
 
+        var lastMinedBlock = _blockchain.LastMinedBlock; // persist current lastMinedBlock for expectation
         _blockchain.NewMinedBlock();
+        
         Assert.Equal(expectedNumberOfTransactions, _blockchain.LastMinedBlock.Transactions.Count);
         Assert.Equal(0, _blockchain.CurrentTransactionsCount);
-        Assert.Equal("0x1", _blockchain.LastMinedBlock.PreviousHash);
+        Assert.Equal(lastMinedBlock.ToString(), _blockchain.LastMinedBlock.PreviousHash);
     }
 
     [Fact]

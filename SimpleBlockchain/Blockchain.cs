@@ -39,7 +39,7 @@ public class Blockchain
             DateTime.Now, 
             _transactions.ToList(), 
             nonce,
-            previousHash ?? _hashProducer.GeneratedHash(LastMinedBlock));
+            previousHash ?? _hashProducer.GeneratedHash(LastMinedBlock.ToString()));
         
         _chain.Add(newBlock);
         _transactions.Clear();

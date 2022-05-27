@@ -2,8 +2,8 @@
 
 internal class FakeHashProducer : IProduceHash
 {
-    public string GeneratedHash(Block block)
+    public string GeneratedHash(string input)
     {
-        return $"0x{block.Index}";
+        return input;
     }
 }

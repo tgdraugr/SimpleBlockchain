@@ -2,5 +2,5 @@
 
 public interface IProduceHash
 {
-    string GeneratedHash(Block block);
+    string GeneratedHash(string input);
 }
