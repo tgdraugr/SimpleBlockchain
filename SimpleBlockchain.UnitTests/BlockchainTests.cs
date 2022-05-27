@@ -4,7 +4,8 @@ namespace SimpleBlockchain.UnitTests;
 
 public class BlockchainTests
 {
-    private readonly Blockchain _blockchain = new(new FakeHashProducer());
+    private static readonly FakeNonceBrewer FakeNonceBrewer = new();
+    private readonly Blockchain _blockchain = new(new FakeHashProducer(), FakeNonceBrewer);
 
     [Fact]
     public void Should_have_a_genesis_block()
@@ -48,6 +49,6 @@ public class BlockchainTests
             _blockchain.NewTransaction("sender", "recipient", 10);
 
         _blockchain.NewMinedBlock();
-        Assert.Equal(true, _blockchain.CalledProofOfWork);
+        Assert.True(FakeNonceBrewer.CalledProofOfWork);
     }
 }
