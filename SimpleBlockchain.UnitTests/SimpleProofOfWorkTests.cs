@@ -13,7 +13,7 @@ public class SimpleProofOfWorkTests
         1, 
         "PreviousHash");
 
-    private static readonly Dictionary<int, string> ExpectedHashesPerNonce = new()
+    private static readonly Dictionary<int, string>? ExpectedHashesPerNonce = new()
     {
         { 0, "abc" },
         { 1, "x91" },
@@ -28,16 +28,16 @@ public class SimpleProofOfWorkTests
     [Fact]
     public void Should_brew_a_nonce_when_hash_has_predefined_count_of_leading_zeros()
     {
-        var hashProducer = new FakeHashProducerWithTracking(ExpectedHashesPerNonce);
-        var pow = new SimpleProofOfWork(hashProducer);
+        var fakeHashProducer = new FakeHashProducer(ExpectedHashesPerNonce);
+        var pow = new SimpleProofOfWork(fakeHashProducer);
         
         var nonce = pow.NewNonce(DummyBlock);
 
-        Assert.Equal(1, hashProducer.PreviousNonceInvoked.Count);
-        Assert.Equal(1, hashProducer.PreviousHashInvoked.Count);
-        Assert.Contains(DummyBlock.Nonce.ToString(), hashProducer.PreviousNonceInvoked);
-        Assert.Contains(DummyBlock.PreviousHash, hashProducer.PreviousHashInvoked);
-        Assert.Equal(new HashSet<int> { 0, 1, 2, 3, 4 }, hashProducer.NonceInvoked);
+        Assert.Equal(1, fakeHashProducer.PreviousNonceInvoked.Count);
+        Assert.Equal(1, fakeHashProducer.PreviousHashInvoked.Count);
+        Assert.Contains(DummyBlock.Nonce.ToString(), fakeHashProducer.PreviousNonceInvoked);
+        Assert.Contains(DummyBlock.PreviousHash, fakeHashProducer.PreviousHashInvoked);
+        Assert.Equal(new HashSet<int> { 0, 1, 2, 3, 4 }, fakeHashProducer.NonceInvoked);
         Assert.Equal(4, nonce);
     }
 }
