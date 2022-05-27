@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace SimpleBlockchain;
 
-internal class Sha256HashProducer : IProduceHash
+public class Sha256HashProducer : IProduceHash
 {
     public string GeneratedHash(Block block)
     {
