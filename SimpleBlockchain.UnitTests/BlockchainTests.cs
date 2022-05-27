@@ -22,7 +22,7 @@ public class BlockchainTests
 
         for (var transactionCount = 1; transactionCount <= 3; transactionCount++)
         {
-            var transaction = _blockchain.NewTransaction("sender", "recipient", 10);
+            var transaction = _blockchain.NewTransaction("sender", "recipient", transactionCount);
             Assert.Equal(expectedNextMinedBlockIndex, transaction.BlockIndex);
             Assert.Equal(transactionCount, _blockchain.CurrentTransactionsCount);
         }
@@ -32,8 +32,7 @@ public class BlockchainTests
     public void Should_reset_current_transactions_on_mining_a_new_block()
     {
         const int expectedNumberOfTransactions = 3;
-        for (var transactionCount = 1; transactionCount <= expectedNumberOfTransactions; transactionCount++)
-            _blockchain.NewTransaction("sender", "recipient", 10);
+        BroadcastTransactions(expectedNumberOfTransactions);
 
         _blockchain.NewMinedBlock();
         Assert.Equal(expectedNumberOfTransactions, _blockchain.LastMinedBlock.Transactions.Count);
@@ -45,10 +44,14 @@ public class BlockchainTests
     public void Should_produce_a_proof_of_work_when_mining_a_new_block()
     {
         const int expectedNumberOfTransactions = 3;
-        for (var transactionCount = 1; transactionCount <= expectedNumberOfTransactions; transactionCount++)
-            _blockchain.NewTransaction("sender", "recipient", 10);
-
+        BroadcastTransactions(expectedNumberOfTransactions);
         _blockchain.NewMinedBlock();
         Assert.True(FakeNonceBrewer.CalledProofOfWork);
+    }
+
+    private void BroadcastTransactions(int totalTransactions)
+    {
+        for (var transactionCount = 1; transactionCount <= totalTransactions; transactionCount++)
+            _blockchain.NewTransaction("sender", "recipient", transactionCount);
     }
 }
