@@ -1,0 +1,13 @@
+﻿{
+  "profiles": {
+    "SimpleBlockchain.API": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "applicationUrl": "http://localhost:5209;https://localhost:7246",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

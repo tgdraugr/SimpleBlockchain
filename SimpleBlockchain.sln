@@ -4,6 +4,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleBlockchain.UnitTests"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleBlockchain", "SimpleBlockchain\SimpleBlockchain.csproj", "{28240BCD-9B3A-4A4E-AAC9-6C2F818C4B47}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleBlockchain.API", "SimpleBlockchain.API\SimpleBlockchain.API.csproj", "{F3117EE6-9502-46AD-BFD0-2B822CEDCB46}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleBlockchain.IntegrationTests", "SimpleBlockchain.IntegrationTests\SimpleBlockchain.IntegrationTests.csproj", "{AD230574-B0AC-4CEA-B124-85FE806971D2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{28240BCD-9B3A-4A4E-AAC9-6C2F818C4B47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28240BCD-9B3A-4A4E-AAC9-6C2F818C4B47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28240BCD-9B3A-4A4E-AAC9-6C2F818C4B47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3117EE6-9502-46AD-BFD0-2B822CEDCB46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3117EE6-9502-46AD-BFD0-2B822CEDCB46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3117EE6-9502-46AD-BFD0-2B822CEDCB46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3117EE6-9502-46AD-BFD0-2B822CEDCB46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD230574-B0AC-4CEA-B124-85FE806971D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD230574-B0AC-4CEA-B124-85FE806971D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD230574-B0AC-4CEA-B124-85FE806971D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD230574-B0AC-4CEA-B124-85FE806971D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
