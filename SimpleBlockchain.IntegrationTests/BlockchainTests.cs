@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
 using SimpleBlockchain.API;
 using Xunit;

@@ -17,9 +17,9 @@ public class BlockchainNodeService : BlockchainNode.BlockchainNodeBase
     {
         return Task.FromResult(new GetChainReply
         {
-            Chain = { new RepeatedField<Block>
+            Chain = { new RepeatedField<BlockReply>
             {
-                _blockchain.FullChain.Select(block => new Block()
+                _blockchain.FullChain.Select(block => new BlockReply
                 {                
                     Index = block.Index,
                     Nonce = block.Nonce,
@@ -27,9 +27,9 @@ public class BlockchainNodeService : BlockchainNode.BlockchainNodeBase
                     PreviousHash = block.PreviousHash,
                     Transactions =
                     {
-                        new RepeatedField<Transaction>
+                        new RepeatedField<TransactionReply>
                         {
-                            block.Transactions.Select(transaction => new Transaction
+                            block.Transactions.Select(transaction => new TransactionReply
                             {
                                 Amount = transaction.Amount,
                                 Recipient = transaction.Recipient,
