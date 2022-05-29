@@ -43,4 +43,16 @@ public class BlockchainNodeService : BlockchainNode.BlockchainNodeBase
             Length = _blockchain.FullChain.Count()
         });
     }
+
+    public override Task<TransactionReply> Broadcast(TransactionRequest request, ServerCallContext context)
+    {
+        var transaction = _blockchain.NewTransaction(request.Sender, request.Recipient, request.Amount);
+        return Task.FromResult(new TransactionReply
+        {
+            Amount = transaction.Amount,
+            Recipient = transaction.Recipient,
+            Sender = transaction.Sender,
+            BlockIndex = transaction.BlockIndex
+        });
+    }
 }

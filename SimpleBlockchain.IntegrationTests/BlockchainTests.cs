@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
 using SimpleBlockchain.API;
 using Xunit;
@@ -24,5 +23,23 @@ public class BlockchainTests : IntegrationTest
         Assert.Equal(1, genesisBlock.Index);
         Assert.Empty(genesisBlock.Transactions);
         Assert.Equal("None", genesisBlock.PreviousHash);
+    }
+    
+    [Fact]
+    public async Task Should_add_new_transaction_to_the_blockchain()
+    {
+        var client = new BlockchainNode.BlockchainNodeClient(Channel);
+        
+        var reply = await client.BroadcastAsync(new TransactionRequest
+        {
+            Sender = "A Person",
+            Recipient = "Another Person",
+            Amount = 50,
+        });
+        
+        Assert.Equal("A Person", reply.Sender);
+        Assert.Equal("Another Person", reply.Recipient);
+        Assert.Equal(50, reply.Amount);
+        Assert.Equal(2, reply.BlockIndex); // since blockchain only contains the genesis block
     }
 }

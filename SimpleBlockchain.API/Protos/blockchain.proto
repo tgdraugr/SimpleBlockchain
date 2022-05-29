@@ -7,8 +7,17 @@ import "google/protobuf/empty.proto";
 
 service BlockchainNode {
   rpc GetChain (google.protobuf.Empty) returns (GetChainReply);
+  rpc Broadcast (TransactionRequest) returns (TransactionReply);
 }
 
+// Requests
+message TransactionRequest {
+  string sender = 1;
+  string recipient = 2;
+  int32 amount = 3;
+}
+
+// Replies
 message GetChainReply {
   repeated BlockReply chain = 1;
   int64 length = 2;
