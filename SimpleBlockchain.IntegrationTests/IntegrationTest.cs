@@ -14,7 +14,7 @@ public class IntegrationTest : IClassFixture<GrpcTestFixture<Startup>>, IDisposa
         Fixture = fixture;
     }
 
-    private GrpcTestFixture<Startup> Fixture { get; }
+    protected GrpcTestFixture<Startup> Fixture { get; }
     
     protected GrpcChannel Channel => _channel ??= CreateChannel();
 

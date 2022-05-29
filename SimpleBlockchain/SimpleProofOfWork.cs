@@ -2,11 +2,10 @@
 
 public class SimpleProofOfWork : IBrewNonce
 {
-    private const int DefaultLeadingZerosCount = 2;
     private readonly IProduceHash _hashProducer;
     private readonly int _leadingZerosCount;
 
-    public SimpleProofOfWork(IProduceHash hashProducer, int leadingZerosCount = DefaultLeadingZerosCount)
+    public SimpleProofOfWork(IProduceHash hashProducer, int leadingZerosCount)
     {
         _hashProducer = hashProducer;
         _leadingZerosCount = leadingZerosCount;

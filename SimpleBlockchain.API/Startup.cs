@@ -4,11 +4,17 @@ namespace SimpleBlockchain.API;
 
 public class Startup
 {
+    private const int ProofOfWorkDifficulty = 4;
+
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddGrpc();
         services.AddSingleton<IProduceHash,Sha256HashProducer>();
-        services.AddSingleton<IBrewNonce, SimpleProofOfWork>();
+        services.AddSingleton<IBrewNonce, SimpleProofOfWork>(serviceProvider =>
+        {
+            var hashProducer = serviceProvider.GetRequiredService<IProduceHash>();
+            return new SimpleProofOfWork(hashProducer, ProofOfWorkDifficulty);
+        });
         services.AddSingleton<Blockchain>();
     }
 

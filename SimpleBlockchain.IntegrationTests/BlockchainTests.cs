@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
+using Microsoft.Extensions.DependencyInjection;
 using SimpleBlockchain.API;
 using Xunit;
 
@@ -9,6 +10,16 @@ public class BlockchainTests : IntegrationTest
 {
     public BlockchainTests(GrpcTestFixture<Startup> fixture) : base(fixture)
     {
+        // Change proof of work to a simpler version, for fast running test
+        Fixture.ConfigureWebHost(webBuilder =>
+        {
+            webBuilder.ConfigureServices(services =>
+            {
+                var serviceProvider = services.BuildServiceProvider();
+                var hashProducer = serviceProvider.GetRequiredService<IProduceHash>();
+                services.AddSingleton<IBrewNonce>(new SimpleProofOfWork(hashProducer, 1));
+            });
+        });
     }
 
     [Fact]

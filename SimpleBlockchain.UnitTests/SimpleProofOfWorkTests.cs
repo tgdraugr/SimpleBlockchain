@@ -27,17 +27,10 @@ public class SimpleProofOfWorkTests
     };
 
     private readonly FakeHashProducer _fakeHashProducer = new(ExpectedHashesPerNonce);
-
-    [Fact]
-    public void Should_brew_a_nonce_when_hash_has_default_count_of_leading_zeros()
-    {
-        var pow = new SimpleProofOfWork(_fakeHashProducer);
-        var nonce = pow.NewNonce(DummyBlock);
-        VerifyNonceBrewing(4, nonce);
-    }
-
+    
     [Theory]
     [InlineData(1, 3)]
+    [InlineData(2, 4)]
     [InlineData(3, 6)]
     [InlineData(4, 7)]
     public void Should_brew_nonce_when_hash_has_a_given_count_of_leading_zeros(int leadingZeros, int expectedNonce)
