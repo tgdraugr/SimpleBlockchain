@@ -55,4 +55,28 @@ public class BlockchainNodeService : BlockchainNode.BlockchainNodeBase
             BlockIndex = transaction.BlockIndex
         });
     }
+
+    public override Task<BlockReply> Mine(Empty request, ServerCallContext context)
+    {
+        var minedBlock = _blockchain.NewMinedBlock();
+        return Task.FromResult(new BlockReply
+        {
+            Index = minedBlock.Index,
+            Nonce = minedBlock.Nonce,
+            Timestamp = minedBlock.Timestamp.ToString("O"),
+            PreviousHash = minedBlock.PreviousHash,
+            Transactions = {  
+                new RepeatedField<TransactionReply>
+                {
+                    minedBlock.Transactions.Select(transaction => new TransactionReply
+                    {
+                        Amount = transaction.Amount,
+                        Recipient = transaction.Recipient,
+                        Sender = transaction.Sender,
+                        BlockIndex = transaction.BlockIndex
+                    })
+                } 
+            }
+        });
+    }
 }

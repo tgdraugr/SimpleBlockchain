@@ -8,6 +8,7 @@ import "google/protobuf/empty.proto";
 service BlockchainNode {
   rpc GetChain (google.protobuf.Empty) returns (GetChainReply);
   rpc Broadcast (TransactionRequest) returns (TransactionReply);
+  rpc Mine(google.protobuf.Empty) returns (BlockReply);
 }
 
 // Requests
