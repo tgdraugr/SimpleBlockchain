@@ -42,4 +42,22 @@ public class BlockchainTests : IntegrationTest
         Assert.Equal(50, reply.Amount);
         Assert.Equal(2, reply.BlockIndex); // since blockchain only contains the genesis block
     }
+
+    [Fact]
+    public async Task Should_mine_a_new_block()
+    {
+        var client = new BlockchainNode.BlockchainNodeClient(Channel);
+
+        var transactionReply = await client.BroadcastAsync(new TransactionRequest
+        {
+            Sender = "Mining test",
+            Recipient = "Fake recipient",
+            Amount = 10
+        });
+
+        var minedBlock = await client.MineAsync(new Empty());
+        
+        Assert.Equal(transactionReply.BlockIndex, minedBlock.Index);
+        Assert.Contains(transactionReply, minedBlock.Transactions);
+    }
 }
