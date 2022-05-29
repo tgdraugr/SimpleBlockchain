@@ -8,10 +8,15 @@
 
   <ItemGroup>
     <Protobuf Include="Protos\greet.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\blockchain.proto" GrpcServices="Server" />
   </ItemGroup>
   
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.40.0" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\SimpleBlockchain\SimpleBlockchain.csproj" />
   </ItemGroup>
 
 </Project>

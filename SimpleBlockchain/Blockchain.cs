@@ -19,6 +19,8 @@ public class Blockchain
     
     public int CurrentTransactionsCount => _transactions.Count;
     
+    public IEnumerable<Block> FullChain => _chain.ToArray();
+
     public Transaction NewTransaction(string sender, string recipient, int amount)
     {
         var newTransaction = new Transaction(sender, recipient, amount, LastMinedBlock.Index + 1);

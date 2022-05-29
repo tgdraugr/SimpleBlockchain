@@ -16,6 +16,12 @@ public class BlockchainTests : IntegrationTest
     {
         var client = new BlockchainNode.BlockchainNodeClient(Channel);
         var reply = await client.GetChainAsync(new Empty());
+        
         Assert.Equal(1, reply.Length);
+        var genesisBlock = reply.Chain[0];
+        Assert.NotNull(genesisBlock);
+        Assert.Equal(1, genesisBlock.Index);
+        Assert.Empty(genesisBlock.Transactions);
+        Assert.Equal("None", genesisBlock.PreviousHash);
     }
 }

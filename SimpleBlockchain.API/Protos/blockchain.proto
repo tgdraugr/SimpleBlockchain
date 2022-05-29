@@ -1,6 +1,6 @@
-syntax = "proto3";
+﻿syntax = "proto3";
 
-option csharp_namespace = "SimpleBlockchain.IntegrationTests";
+option csharp_namespace = "SimpleBlockchain.API";
 
 package blockchain;
 import "google/protobuf/empty.proto";
