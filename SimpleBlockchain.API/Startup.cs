@@ -23,7 +23,6 @@ public class Startup
 
         app.UseEndpoints(endpoints =>
         {
-            endpoints.MapGrpcService<GreeterService>();
             endpoints.MapGrpcService<BlockchainNodeService>();
         });
     }

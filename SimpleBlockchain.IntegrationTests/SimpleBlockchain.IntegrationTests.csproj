@@ -24,7 +24,6 @@
     <ItemGroup>
         <PackageReference Include="Grpc.Tools" Version="2.46.3" />
         <Protobuf Include="Protos\blockchain.proto" GrpcServices="Client" />
-        <Protobuf Include="Protos\greet.proto" GrpcServices="Client" />
     </ItemGroup>
     
     <ItemGroup>
