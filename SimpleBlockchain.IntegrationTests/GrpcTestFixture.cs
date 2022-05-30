@@ -8,10 +8,12 @@ namespace SimpleBlockchain.IntegrationTests;
 
 public class GrpcTestFixture<TStartup> : IDisposable where TStartup : class
 {
+    private bool _disposed;
     private TestServer? _server;
     private IHost? _host;
     private HttpMessageHandler? _handler;
     private Action<IWebHostBuilder>? _configureWebHost;
+
     
     public HttpMessageHandler Handler
     {
@@ -29,9 +31,21 @@ public class GrpcTestFixture<TStartup> : IDisposable where TStartup : class
 
     public void Dispose()
     {
-        _handler?.Dispose();
-        _host?.Dispose();
-        _server?.Dispose();
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+    
+    protected virtual void Dispose(bool disposing)
+    {
+        if (_disposed) return;
+        
+        if (disposing)
+        {
+            _handler?.Dispose();
+            _host?.Dispose();
+            _server?.Dispose();
+        }
+        _disposed = true;
     }
     
     private void EnsureServer()
