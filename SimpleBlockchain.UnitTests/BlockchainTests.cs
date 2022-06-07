@@ -55,6 +55,15 @@ public class BlockchainTests
         Assert.Equal(lastMinedBlock, FakeNonceBrewer.LastMinedBlockReceived);
     }
 
+    [Fact]
+    public void Should_keep_track_of_neighbor_nodes()
+    {
+        var blockchain = new Blockchain(new FakeHashProducer(), FakeNonceBrewer);
+        blockchain.Register("neighbor1", "neighbor2");
+        Assert.Contains("neighbor1", blockchain.Neighbors);
+        Assert.Contains("neighbor2", blockchain.Neighbors);
+    }
+
     private void BroadcastTransactions(int totalTransactions)
     {
         for (var transactionCount = 1; transactionCount <= totalTransactions; transactionCount++)

@@ -13,7 +13,6 @@ public class GrpcTestFixture<TStartup> : IDisposable where TStartup : class
     private IHost? _host;
     private HttpMessageHandler? _handler;
     private Action<IWebHostBuilder>? _configureWebHost;
-
     
     public HttpMessageHandler Handler
     {
@@ -21,6 +20,15 @@ public class GrpcTestFixture<TStartup> : IDisposable where TStartup : class
         {
             EnsureServer();
             return _handler!;
+        }
+    }
+
+    public IServiceProvider ServiceProvider
+    {
+        get
+        {
+            EnsureServer();
+            return _host?.Services!;
         }
     }
 

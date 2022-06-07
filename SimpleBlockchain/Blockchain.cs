@@ -2,6 +2,7 @@
 
 public class Blockchain
 {
+    public static HashSet<string> _Neighbors = new();
     private readonly List<Transaction> _transactions = new();
     private readonly List<Block> _chain = new();
     
@@ -20,6 +21,8 @@ public class Blockchain
     public int CurrentTransactionsCount => _transactions.Count;
     
     public IEnumerable<Block> FullChain => _chain.ToArray();
+
+    public IReadOnlyList<string> Neighbors => _Neighbors.ToList();
 
     public Transaction NewTransaction(string sender, string recipient, int amount)
     {
@@ -46,6 +49,12 @@ public class Blockchain
         _chain.Add(newBlock);
         _transactions.Clear();
         return newBlock;
+    }
+    
+    public void Register(params string[] nodes)
+    {
+        foreach (var node in nodes)
+            _Neighbors.Add(node);
     }
 
     private void SeedWithGenesisBlock()

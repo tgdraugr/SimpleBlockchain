@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.Extensions.DependencyInjection;
 using SimpleBlockchain.API;
@@ -80,8 +81,11 @@ public class BlockchainTests : IntegrationTest
         {
             Nodes = { "neighbor1" }
         });
-        
+
         Assert.Equal(1, reply.Length);
         Assert.Contains("neighbor1", reply.Nodes);
+        
+        var neighborStore = Fixture.ServiceProvider.GetRequiredService<HashSet<string>>();
+        Assert.Contains("neighbor1", neighborStore);
     }
 }
