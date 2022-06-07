@@ -2,17 +2,18 @@
 
 public class Blockchain
 {
-    public static HashSet<string> _Neighbors = new();
     private readonly List<Transaction> _transactions = new();
     private readonly List<Block> _chain = new();
     
     private readonly IProduceHash _hashProducer;
     private readonly IBrewNonce _nonceBrewer;
+    private readonly Neighbors _neighbors;
 
-    public Blockchain(IProduceHash hashProducer, IBrewNonce nonceBrewer)
+    public Blockchain(IProduceHash hashProducer, IBrewNonce nonceBrewer, Neighbors neighbors)
     {
         _hashProducer = hashProducer;
         _nonceBrewer = nonceBrewer;
+        _neighbors = neighbors;
         SeedWithGenesisBlock();
     }
 
@@ -22,7 +23,7 @@ public class Blockchain
     
     public IEnumerable<Block> FullChain => _chain.ToArray();
 
-    public IReadOnlyList<string> Neighbors => _Neighbors.ToList();
+    public IReadOnlyList<string> Neighbors => _neighbors.ToList();
 
     public Transaction NewTransaction(string sender, string recipient, int amount)
     {
@@ -54,7 +55,7 @@ public class Blockchain
     public void Register(params string[] nodes)
     {
         foreach (var node in nodes)
-            _Neighbors.Add(node);
+            _neighbors.Add(node);
     }
 
     private void SeedWithGenesisBlock()

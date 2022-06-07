@@ -5,7 +5,7 @@ namespace SimpleBlockchain.UnitTests;
 public class BlockchainTests
 {
     private static readonly FakeNonceBrewer FakeNonceBrewer = new();
-    private readonly Blockchain _blockchain = new(new FakeHashProducer(), FakeNonceBrewer);
+    private readonly Blockchain _blockchain = new(new FakeHashProducer(), FakeNonceBrewer, new Neighbors());
 
     [Fact]
     public void Should_have_a_genesis_block()
@@ -58,10 +58,9 @@ public class BlockchainTests
     [Fact]
     public void Should_keep_track_of_neighbor_nodes()
     {
-        var blockchain = new Blockchain(new FakeHashProducer(), FakeNonceBrewer);
-        blockchain.Register("neighbor1", "neighbor2");
-        Assert.Contains("neighbor1", blockchain.Neighbors);
-        Assert.Contains("neighbor2", blockchain.Neighbors);
+        _blockchain.Register("neighbor1", "neighbor2");
+        Assert.Contains("neighbor1", _blockchain.Neighbors);
+        Assert.Contains("neighbor2", _blockchain.Neighbors);
     }
 
     private void BroadcastTransactions(int totalTransactions)

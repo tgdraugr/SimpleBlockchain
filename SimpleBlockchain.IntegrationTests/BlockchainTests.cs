@@ -85,7 +85,7 @@ public class BlockchainTests : IntegrationTest
         Assert.Equal(1, reply.Length);
         Assert.Contains("neighbor1", reply.Nodes);
         
-        var neighborStore = Fixture.ServiceProvider.GetRequiredService<HashSet<string>>();
-        Assert.Contains("neighbor1", neighborStore);
+        var neighbors = Fixture.ServiceProvider.GetRequiredService<Neighbors>();
+        Assert.Contains("neighbor1", neighbors);
     }
 }
