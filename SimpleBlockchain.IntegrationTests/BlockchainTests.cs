@@ -71,4 +71,16 @@ public class BlockchainTests : IntegrationTest
         Assert.Equal(transactionReply.BlockIndex, minedBlock.Index);
         Assert.Contains(transactionReply, minedBlock.Transactions);
     }
+
+    [Fact]
+    public async Task Should_know_about_neighbors_in_the_network()
+    {
+        var client = new BlockchainNode.BlockchainNodeClient(Channel);
+        var reply = await client.RegisterAsync(new NeighborNodesRequest
+        {
+            Nodes = { "neighbor1" }
+        });
+        
+        Assert.Equal(1, reply.Length);
+    }
 }
