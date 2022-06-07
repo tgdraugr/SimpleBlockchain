@@ -9,6 +9,7 @@ service BlockchainNode {
   rpc GetChain (google.protobuf.Empty) returns (GetChainReply);
   rpc Broadcast (TransactionRequest) returns (TransactionReply);
   rpc Mine(google.protobuf.Empty) returns (BlockReply);
+  rpc Register(NeighborNodesRequest) returns (NeighborNodesReply);
 }
 
 // Requests
@@ -16,6 +17,10 @@ message TransactionRequest {
   string sender = 1;
   string recipient = 2;
   int32 amount = 3;
+}
+
+message NeighborNodesRequest {
+  repeated string nodes = 1;
 }
 
 // Replies
@@ -37,4 +42,9 @@ message TransactionReply {
   string recipient = 2;
   int32 amount = 3;
   int64 block_index = 4;
+}
+
+message NeighborNodesReply {
+  repeated string nodes = 1;
+  int64 length = 2;
 }

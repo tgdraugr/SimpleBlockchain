@@ -79,4 +79,13 @@ public class BlockchainNodeService : BlockchainNode.BlockchainNodeBase
             }
         });
     }
+
+    public override Task<NeighborNodesReply> Register(NeighborNodesRequest request, ServerCallContext context)
+    {
+        return Task.FromResult(new NeighborNodesReply
+        {
+            Length = request.Nodes.Count,
+            Nodes = { request.Nodes }
+        });
+    }
 }

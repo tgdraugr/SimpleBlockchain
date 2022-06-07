@@ -82,5 +82,6 @@ public class BlockchainTests : IntegrationTest
         });
         
         Assert.Equal(1, reply.Length);
+        Assert.Contains("neighbor1", reply.Nodes);
     }
 }
