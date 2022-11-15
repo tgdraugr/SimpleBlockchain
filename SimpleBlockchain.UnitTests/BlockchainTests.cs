@@ -1,3 +1,4 @@
+using NSubstitute;
 using Xunit;
 
 namespace SimpleBlockchain.UnitTests;
@@ -8,7 +9,7 @@ public class BlockchainTests
     private readonly Blockchain _blockchain = new(new FakeHashProducer(), FakeNonceBrewer, new Neighbors());
 
     [Fact]
-    public void Should_have_a_genesis_block()
+    public void Has_a_genesis_block()
     {
         const int genesisBlockIndex = 1;
         Assert.NotNull(_blockchain.LastMinedBlock);
@@ -16,20 +17,20 @@ public class BlockchainTests
     }
 
     [Fact]
-    public void Should_add_new_transaction_into_next_mined_block()
+    public void Adds_new_transaction_into_next_mined_block()
     {
         const int expectedNextMinedBlockIndex = 2;
 
-        for (var transactionCount = 1; transactionCount <= 3; transactionCount++)
+        for (var count = 1; count <= 3; count++)
         {
-            var transaction = _blockchain.NewTransaction("sender", "recipient", transactionCount);
+            var transaction = _blockchain.NewTransaction("sender", "recipient", count);
             Assert.Equal(expectedNextMinedBlockIndex, transaction.BlockIndex);
-            Assert.Equal(transactionCount, _blockchain.CurrentTransactionsCount);
+            Assert.Equal(count, _blockchain.CurrentTransactionsCount);
         }
     }
 
     [Fact]
-    public void Should_reset_current_transactions_on_mining_a_new_block()
+    public void Resets_current_transactions_when_mining_a_new_block()
     {
         const int expectedNumberOfTransactions = 3;
         BroadcastTransactions(expectedNumberOfTransactions);
@@ -43,7 +44,7 @@ public class BlockchainTests
     }
 
     [Fact]
-    public void Should_produce_a_new_nonce_based_on_last_block_when_mining_a_new_one()
+    public void Produces_a_new_nonce_based_on_last_block_when_mining_a_new_one()
     {
         const int expectedNumberOfTransactions = 3;
         BroadcastTransactions(expectedNumberOfTransactions);
@@ -56,7 +57,7 @@ public class BlockchainTests
     }
 
     [Fact]
-    public void Should_keep_track_of_neighbor_nodes()
+    public void Keeps_track_of_neighbor_nodes()
     {
         _blockchain.Register("neighbor1", "neighbor2");
         Assert.Contains("neighbor1", _blockchain.Neighbors);
@@ -65,7 +66,7 @@ public class BlockchainTests
 
     private void BroadcastTransactions(int totalTransactions)
     {
-        for (var transactionCount = 1; transactionCount <= totalTransactions; transactionCount++)
-            _blockchain.NewTransaction("sender", "recipient", transactionCount);
+        for (var count = 1; count <= totalTransactions; count++)
+            _blockchain.NewTransaction("sender", "recipient", count);
     }
 }
