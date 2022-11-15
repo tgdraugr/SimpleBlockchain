@@ -9,11 +9,11 @@ public class Blockchain
     private readonly IBrewNonce _nonceBrewer;
     private readonly Neighbors _neighbors;
 
-    public Blockchain(IProduceHash hashProducer, IBrewNonce nonceBrewer, Neighbors neighbors)
+    public Blockchain(IProduceHash hashProducer, IBrewNonce nonceBrewer)
     {
         _hashProducer = hashProducer;
         _nonceBrewer = nonceBrewer;
-        _neighbors = neighbors;
+        _neighbors = new Neighbors();
         SeedWithGenesisBlock();
     }
 

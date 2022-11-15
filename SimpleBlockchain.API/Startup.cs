@@ -16,7 +16,7 @@ public class Startup
             return new SimpleProofOfWork(hashProducer, ProofOfWorkDifficulty);
         });
         services.AddSingleton<Blockchain>();
-        services.AddSingleton<Neighbors>();
+        // services.AddSingleton<Neighbors>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

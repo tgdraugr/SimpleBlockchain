@@ -84,7 +84,7 @@ public class BlockchainTests : IntegrationTest
         Assert.Equal(1, reply.Length);
         Assert.Contains("neighbor1", reply.Nodes);
         
-        var neighbors = Fixture.ServiceProvider.GetRequiredService<Neighbors>();
-        Assert.Contains("neighbor1", neighbors);
+        var blockchain = Fixture.ServiceProvider.GetRequiredService<Blockchain>();
+        Assert.Contains("neighbor1", blockchain.Neighbors);
     }
 }
